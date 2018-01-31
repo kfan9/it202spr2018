@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>repl.it</title>
+    <link href="index.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <input type="text" id="checkAmount" placeholder="Enter check amount">
+    <input type="text" id="tipPercentage" placeholder = "Enter tip percentage in decimal form">
+    <button id="calculate">Caculate tip</button>
+    <div id="calculatedTip"></div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+      $(function() {
+        
+        $("#calculate").on("click", function() {
+            
+            var tip = $("#checkAmount").val() * $("#tipPercentage").val();
+            
+            console.log(tip);
+            
+            $("#calculatedTip").html("Tip: $" + tip);
+        });
+        
+      });
+      
+      
+    </script>
+  </body>
+</html>
