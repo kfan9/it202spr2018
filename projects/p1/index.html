@@ -13,6 +13,9 @@
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
+@import url('https://fonts.googleapis.com/css?family=Libre+Baskerville:400,700');
+@import url("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
+
     <!-- Custom fonts for this template -->
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
@@ -22,6 +25,8 @@
     <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+    
+    <script	  src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
 
     <!-- Custom styles for this template -->
     <link href="css/landing-page.min.css" rel="stylesheet">
@@ -290,6 +295,91 @@
     </div>
   </div>
 </div>
+
+
+
+
+<section class="row-section">
+    <div class="container">
+	    <div class="row">
+		    <h2 class="text-center"><span>Dragable Listing</span>Created with <i class="fa fa-heart"></i> from<a href="http://grafreez.com"> Grafreez.com</a></h2>
+	    </div>
+	    <div class="col-md-10 offset-md-1 row-block">
+	        <ul id="sortable">
+	            <li><div class="media">
+	            <div class="media-left align-self-center">
+	                <img class="rounded-circle" src="https://randomuser.me/api/portraits/women/50.jpg">
+	            </div>
+	            <div class="media-body">
+	                <h4>Camila Terry</h4>
+	                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>
+	            </div>
+	            <div class="media-right align-self-center">
+	                <a href="#" class="btn btn-default">Contact Now</a>
+	            </div>
+	        </div></li>
+	            <li><div class="media">
+	            <div class="media-left align-self-center">
+	                <img class="rounded-circle" src="https://randomuser.me/api/portraits/men/42.jpg">
+	            </div>
+	            <div class="media-body">
+	                <h4>Joel Williamson</h4>
+	                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>
+	            </div>
+	            <div class="media-right align-self-center">
+	                <a href="#" class="btn btn-default">Contact Now</a>
+	            </div>
+	        </div></li>
+	            <li><div class="media">
+	            <div class="media-left align-self-center">
+	                <img class="rounded-circle" src="https://randomuser.me/api/portraits/women/67.jpg">
+	            </div>
+	            <div class="media-body">
+	                <h4>Deann Payne</h4>
+	                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>
+	            </div>
+	            <div class="media-right align-self-center">
+	                <a href="#" class="btn btn-default">Contact Now</a>
+	            </div>
+	        </div></li>
+	            <li><div class="media">
+	            <div class="media-left align-self-center">
+	                <img class="rounded-circle" src="https://randomuser.me/api/portraits/women/50.jpg">
+	            </div>
+	            <div class="media-body">
+	                <h4>Leona Hunter</h4>
+	                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>
+	            </div>
+	            <div class="media-right align-self-center">
+	                <a href="#" class="btn btn-default">Contact Now</a>
+	            </div>
+	        </div></li>
+	            <li><div class="media">
+	            <div class="media-left align-self-center">
+	                <img class="rounded-circle" src="https://randomuser.me/api/portraits/men/89.jpg">
+	            </div>
+	            <div class="media-body">
+	                <h4>Donald Perkins</h4>
+	                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>
+	            </div>
+	            <div class="media-right align-self-center">
+	                <a href="#" class="btn btn-default">Contact Now</a>
+	            </div>
+	        </div></li>
+	        
+	            
+	        
+	        </ul>
+	    </div>
+</div>
+</section>
+  <script>
+  $( function() {
+    $( "#sortable" ).sortable();
+    $( "#sortable" ).disableSelection();
+  } );
+  </script>
+
 
 
     <!-- Footer -->
