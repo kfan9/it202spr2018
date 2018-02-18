@@ -4,52 +4,60 @@
   <title>Kang Jye Fan - Lab 2</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <script
-  src="http://code.jquery.com/jquery-3.3.1.min.js"
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container" id="home"></div>  
+   <div class="container" id="search">
+   <input type="text" id="query" placeholder="search">
+   <button id="btnSearch">Search</button>
+  </div>  
+  
+<div class="container" id="results">results
+
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-</head>
 
 <script>
 
 function doSearch() {
+  
   var url = "https://api.nytimes.com/svc/movies/v2/reviews/search.json";
   url += '?' + $.param({
-    'api-key': "c3f6868fa3964057994b8c553ae7ad9f"
+    'api-key': "c3f6868fa3964057994b8c553ae7ad9f",
+    'query': $("#query").val()
   });
+  
   $.ajax({
     url: url,
     method: 'GET',
   }).done(function(response) {
-    //console.log(res[pmse]);
-    $.each(response.results, function(i,v)){
+
+    $("#results").append("<p>Your search for " + $("#query").val() + " returned " + "</p>");
+    
+    $.each(response.results, function(i,v){
       console.log(v);
-      $("body").append(v.display_title + "<br>");
-    }
+      $("#results").append( v.display_title + "opens on  " + v.opening_date + "<br>");
+    });
+    
   }).fail(function(err) {
     throw err;
   });
 }
 
+$("#btnSearch").on("click", doSearch);
+
 </script>
-
-<body>
-  
-
-
-
-
-<div class="jumbotron text-center">
-  <h1> NYT Movie Reviews</h1>
-  <p>Navigate through movies review from NYT in this page!</p> 
-  <hr>
- <a class="btn btn-primary btn-lg" href="#" role="button" onclick="doSearch()">Search</a>
- <hr>
-</div>
 
 
 
