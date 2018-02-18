@@ -75,13 +75,18 @@
               console.log(v.url);
               
                var img;
+               var date;
               if (v.multimedia !== null)
                 {
                    img = v.multimedia.src;
                 }else{
                   img = "https://dummyimage.com/300x150/000/fff";
                 }
-              
+                if(v.opening_date!==null){
+                  date=v.opening_date;
+                }else{ 
+                  date= "not found";
+                }
               
               $("#results").append( 
                                                         
@@ -89,7 +94,7 @@
                           '<img class="card-img-top" src="' + img + '" alt="Card image cap">' +
                           '<div class="card-body">' +
                             '<h5 class="card-title">' + v.display_title + '</h5>' +
-                            '<p class="card-text">' + "opens on " + v.opening_date + '</p>' +
+                            '<p class="card-text">' + "date:  " +date  + '</p>' +
                             '<a href="' + v.link.url + ' "class="btn btn-primary">' + 'Go to URL</a>' +
                           '</div>' +
                         '</div>'
