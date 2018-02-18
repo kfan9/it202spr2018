@@ -1,6 +1,7 @@
 body {
   font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   padding-top: 0px;
+   color: #818181;
 }
 
 h1,
@@ -262,4 +263,17 @@ a {
 a:hover {
     color: #fec503
 }
+
+/* part 4  */
+
+  @media screen and (max-width: 768px) {
+    .col-sm-4 {
+      text-align: center;
+      margin: 25px 0;
+    }
+    .btn-lg {
+        width: 100%;
+        margin-bottom: 35px;
+    }
+  }
 
