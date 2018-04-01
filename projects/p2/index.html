@@ -18,7 +18,7 @@
     
     <!-- Navigation bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#first">Navbar</a>
+  <a class="navbar-brand" href="#first">Weather</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -40,25 +40,27 @@
 <!-- screen one -->
 <div  id="first" class="screen" >
 <div class="jumbotron">
-  <h1 class="display-4">Home</h1>
-  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-  <hr class="my-4">
-  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-  <p class="lead">
-    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-  </p>
+  <h1 class="display-4">Instruction</h1>
+  <p class="lead">An app to search and list schools in Chicago.</p>
+  <p>Navigate to search section to start searching for school.</p>
+  <p>Enter the search by school types, and the type will be listed in the Search page.</p>
+
 </div>
 </div>
 <!-- screen two -->
 <div  id="second" class = "screen">
 <div class="jumbotron">
-  <h1 class="display-4">Search and List</h1>
-  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+  <h1 class="display-4">Search</h1>
+  <p class="lead" id="list-school-types">Sample school types to seach for.</p>
+    <p >School Types:</p>
+    <div id="schoolTypes">
+
+    </div>
   <hr class="my-4">
-  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
   <p class="lead">
-    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+    <a class="btn btn-primary btn-lg" href="#" role="button" >Learn more</a>
   </p>
+
 </div>
 </div>
 <!-- screen three -->
@@ -84,8 +86,93 @@
             $(".screen").hide();
             var targetSelector = $(this).attr("href");
             $(targetSelector).show();
-        })
+        });
         
+        /* get all types
+        https://data.cityofchicago.org/resource/76dk-7ieb.json?$select=school_type&$group=school_type
+        */
+        
+        
+        function showSchoolTypes() {
+          var request = new XMLHttpRequest();
+          request.open('GET', 'https://data.cityofchicago.org/resource/76dk-7ieb.json?$select=school_type&$group=school_type');
+          request.onload = function(){
+            //console.log(request.responseText); show plain text
+            var schoolNames = JSON.parse(request.responseText);
+            var x;
+            for(x in schoolNames){
+              console.log(schoolNames[x].school_type);
+              $("#schoolTypes").append('<p>' + schoolNames[x].school_type + '</p>');
+              
+            }
+            
+            
+          }
+          request.send();
+        }
+        window.onload = function(){
+          showSchoolTypes();
+        };
+        
+        /*
+        function doSearch() {
+          $( "#schoolTypes" ).empty();
+          var url = "https://data.cityofchicago.org/resource/76dk-7ieb.json";
+          url += '?' + $.param({
+            'api-key': "c3f6868fa3964057994b8c553ae7ad9f",
+            'query': $("#query").val()
+          });
+          
+          
+          https://data.cityofchicago.org/resource/76dk-7ieb.json?$where=school_type IN ('schoolType 1','schoolType 2',...,'schoolType X')  
+          
+          $.ajax({
+            url: url,
+            method: 'GET',
+          }).done(function(response) {
+            $("#results").append("<p>Your search for " + $("#query").val() + " returned " + response.num_results + " results.</p>");
+          
+            $.each(response.results, function(i,v){
+              console.log(v.url);
+              
+               var img;
+               var date;
+              if (v.multimedia !== null)
+                {
+                   img = v.multimedia.src;
+                }else{
+                  img = "https://dummyimage.com/300x150/000/fff";
+                }
+                if(v.opening_date!==null){
+                  date=v.opening_date;
+                }else{ 
+                  date= "not found";
+                }
+              
+              $("#results").append( 
+                                                        
+                          '<div class="card" style="width: 18rem;">' +
+                          '<img class="card-img-top" src="' + img + '" alt="Card image cap">' +
+                          '<div class="card-body">' +
+                            '<h5 class="card-title">' + v.display_title + '</h5>' +
+                            '<p class="card-text">' + "date:  " +date  + '</p>' +
+                            '<a href="' + v.link.url + ' "class="btn btn-primary">' + 'Go to URL</a>' +
+                          '</div>' +
+                        '</div>'
+                
+    
+                
+                );
+            });
+            
+          }).fail(function(err) {
+            throw err;
+          });
+        }
+        
+        $("#btnSearch").on("click", doSearch);
+        
+        */
     </script>
 
     
