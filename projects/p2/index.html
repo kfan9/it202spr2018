@@ -58,7 +58,7 @@
     </div>
   <hr class="my-4">
   <p class="lead">
-    <a class="btn btn-primary btn-lg" href="#" role="button" >Learn more</a>
+    <a class="btn btn-primary btn-lg" href="#" role="button" >Search</a>
   </p>
 
 </div>
@@ -77,12 +77,16 @@
     </div>
     
     <script>
+    
+    window.onload = function(){
+          showSchoolTypes();
+        };
+    
         $("#first").show();
         $("#second").hide();
         $("#third").hide();
        
         $("nav a").on("click", function(){
-            
             $(".screen").hide();
             var targetSelector = $(this).attr("href");
             $(targetSelector).show();
@@ -101,18 +105,16 @@
             var schoolNames = JSON.parse(request.responseText);
             var x;
             for(x in schoolNames){
-              console.log(schoolNames[x].school_type);
+              //console.log(schoolNames[x].school_type);
               $("#schoolTypes").append('<p>' + schoolNames[x].school_type + '</p>');
               
             }
-            
-            
           }
           request.send();
         }
-        window.onload = function(){
-          showSchoolTypes();
-        };
+        
+
+        
         
         /*
         function doSearch() {
