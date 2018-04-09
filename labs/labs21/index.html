@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Canvas Animation Example</title>
+    <style>
+        body {
+            background-color: gray;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <canvas id="canvas"></canvas>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <script>
+
+    
+    window.addEventListener('deviceorientation', function(event) {
+  console.log(event.alpha + ' : ' + event.beta + ' : ' + event.gamma);
+});
+    
+    
+        $(document).ready(function() {
+            $("#canvas").attr("width", $(window).width());
+            $("#canvas").attr("height", $(window).height());
+            $("#canvas").click(function() {
+                 navigator.vibrate([500]);
+            });
+            var c = $("#canvas")[0];
+            var ctx = c.getContext("2d");
+            var player = { x: c.width / 2, y: c.height / 2, r: 25, color: "blue", speed: 10 };
+            var target = { x: c.width / 4, y: c.height / 4, r: 25, color: "red" };
+
+            var utter = new SpeechSynthesisUtterance();
+
+
+            function draw() {
+                ctx.clearRect(0, 0, c.width, c.height);
+
+                $.each([player, target], function(i, v) {
+                    ctx.beginPath();
+                    ctx.arc(v.x, v.y, v.r, 0, Math.PI * 2);
+                    ctx.fillStyle = v.color;
+                    ctx.fill();
+                });
+
+                var dx = player.x - target.x;
+                var dy = player.y - target.y;
+                var distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < player.r + target.r) {
+                    // collision detected!
+                    //console.log("collision");
+
+                    //TODO:  add vibration upon collision
+                    //startPersistentVibrate(1,1);
+                    //TODO:  add speechSynthesis notification of collision
+
+                }
+
+
+                window.requestAnimationFrame(draw);
+            }
+
+            draw();
+
+
+
+
+
+            //TODO:  add player control on mobile via device motion API
+
+            // as part of your development process, the first step
+            //   is to output the values to the screen so that you understand what's happening
+
+            //https://developers.google.com/web/fundamentals/native-hardware/device-orientation/
+
+
+
+            $(document).keydown(function(e) {
+                switch (e.which) {
+                    case 37: // left
+                        player.x -= player.speed;
+                        break;
+
+                    case 38: // up
+                        player.y -= player.speed;
+                        break;
+
+                    case 39: // right
+                        player.x += player.speed;
+                        break;
+
+                    case 40: // down
+                        player.y += player.speed;
+                        break;
+
+                    default:
+                        return; // exit this handler for other keys
+                }
+                e.preventDefault(); // prevent the default action (scroll / move caret)
+            });
+
+
+        });
+    var synth = window.speechSynthesis;
+
+var inputForm = document.querySelector('form');
+var inputTxt = document.querySelector('.txt');
+var voiceSelect = document.querySelector('select');
+
+var pitch = document.querySelector('#pitch');
+var pitchValue = document.querySelector('.pitch-value');
+var rate = document.querySelector('#rate');
+var rateValue = document.querySelector('.rate-value');
+
+var voices = [];
+
+function populateVoiceList() {
+  voices = synth.getVoices();
+
+  for(i = 0; i < voices.length ; i++) {
+    var option = document.createElement('option');
+    option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
+    
+    if(voices[i].default) {
+      option.textContent += ' -- DEFAULT';
+    }
+
+    option.setAttribute('data-lang', voices[i].lang);
+    option.setAttribute('data-name', voices[i].name);
+    voiceSelect.appendChild(option);
+  }
+}
+
+populateVoiceList();
+if (speechSynthesis.onvoiceschanged !== undefined) {
+  speechSynthesis.onvoiceschanged = populateVoiceList;
+}
+
+inputForm.onsubmit = function(event) {
+  event.preventDefault();
+
+  var utterThis = new SpeechSynthesisUtterance(inputTxt.value);
+  var selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
+  for(i = 0; i < voices.length ; i++) {
+    if(voices[i].name === selectedOption) {
+      utterThis.voice = voices[i];
+    }
+  }
+  utterThis.pitch = pitch.value;
+  utterThis.rate = rate.value;
+  synth.speak(utterThis);
+
+  inputTxt.blur();
+}
+
+var vibrateInterval;
+
+// Starts vibration at passed in level
+function startVibrate(duration) {
+    navigator.vibrate(duration);
+}
+
+// Stops vibration
+function stopVibrate() {
+    // Clear interval and stop persistent vibrating
+    if(vibrateInterval) clearInterval(vibrateInterval);
+    navigator.vibrate(0);
+}
+
+// Start persistent vibration at given duration and interval
+// Assumes a number value is given
+function startPersistentVibrate(duration, interval) {
+    vibrateInterval = setInterval(function() {
+        startVibrate(duration);
+        //console.log("collision");
+    }, interval);
+}
+
+
+
+    </script>
+
+
+</body>
+
+</html>
