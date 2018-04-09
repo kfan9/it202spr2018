@@ -19,11 +19,7 @@
 
     <script>
 
-    
-    window.addEventListener('deviceorientation', function(event) {
-  console.log(event.alpha + ' : ' + event.beta + ' : ' + event.gamma);
-});
-    
+
     
         $(document).ready(function() {
             $("#canvas").attr("width", $(window).width());
@@ -52,6 +48,26 @@
                 var dx = player.x - target.x;
                 var dy = player.y - target.y;
                 var distance = Math.sqrt(dx * dx + dy * dy);
+
+                function handleOrientation(event) {
+                  var absolute = event.absolute;
+                  var alpha    = event.alpha;
+                  var x     = event.beta;
+                  var y    = event.gamma;
+                
+                if(x > 0)
+                    player.y += .04;
+                if(x < 0)
+                    player.y -= .04;
+                if(y > 0)
+                    player.x += .04;
+                if(y < 0)
+                    player.x -= .04;
+                
+                
+                }
+                
+window.addEventListener('deviceorientation', handleOrientation);
 
                 if (distance < player.r + target.r) {
                     // collision detected!
@@ -117,6 +133,8 @@
 
 
         });
+        
+        
     var synth = window.speechSynthesis;
 
 var inputForm = document.querySelector('form');
@@ -167,7 +185,12 @@ inputForm.onsubmit = function(event) {
   synth.speak(utterThis);
 
   inputTxt.blur();
+  
+
 }
+
+
+
 
 
 
