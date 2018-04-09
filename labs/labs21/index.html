@@ -58,10 +58,18 @@
                     //console.log("collision");
                     player.x = c.width/2;
                     player.y = c.height/2;
+                    
                     //TODO:  add vibration upon collision
                     navigator.vibrate([500]);
                     //TODO:  add speechSynthesis notification of collision
-
+    Speech = new SpeechSynthesisUtterance("hit");
+    Speech.voice = voices[2];
+    Speech.voiceURI = "Google UK English Male";
+    Speech.volume = 1; // 0 to 1
+    Speech.rate = 1; // 0.1 to 10
+    Speech.pitch = 0; //0 to 2
+    Speech.lang = 'en-GB';
+    window.speechSynthesis.speak(Speech);
                 }
 
 
