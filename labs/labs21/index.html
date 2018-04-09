@@ -56,9 +56,10 @@
                 if (distance < player.r + target.r) {
                     // collision detected!
                     //console.log("collision");
-
+                    player.x = c.width/2;
+                    player.y = c.height/2;
                     //TODO:  add vibration upon collision
-                    //startPersistentVibrate(1,1);
+                    navigator.vibrate([500]);
                     //TODO:  add speechSynthesis notification of collision
 
                 }
@@ -160,28 +161,7 @@ inputForm.onsubmit = function(event) {
   inputTxt.blur();
 }
 
-var vibrateInterval;
 
-// Starts vibration at passed in level
-function startVibrate(duration) {
-    navigator.vibrate(duration);
-}
-
-// Stops vibration
-function stopVibrate() {
-    // Clear interval and stop persistent vibrating
-    if(vibrateInterval) clearInterval(vibrateInterval);
-    navigator.vibrate(0);
-}
-
-// Start persistent vibration at given duration and interval
-// Assumes a number value is given
-function startPersistentVibrate(duration, interval) {
-    vibrateInterval = setInterval(function() {
-        startVibrate(duration);
-        //console.log("collision");
-    }, interval);
-}
 
 
 
