@@ -100,7 +100,7 @@
             $.ajax({
                 method: "POST",
                 contentType: "application/json",
-                url: visionApiEndpoint + "?key=AIzaSyBca88kmU7Cg7S5W47I_8_24DwkPLUXGVs",
+                url: visionApiEndpoint + "?key=AIzaSyDJVI-10Ryes9vyNuMZitNP6hzAj1AKDS0",
                 data: JSON.stringify(requestBody)
               })
                 .done(function(response) {
@@ -109,7 +109,11 @@
                   // get object with face coordinates as determined by GCV
                   
                   // TODO - handle "no face" condition
+                  
+                  
+                  
                   var faceVertices = response.responses[0].faceAnnotations[0].boundingPoly.vertices;
+
                   console.log(faceVertices);
                   
                   // find corners
@@ -154,7 +158,7 @@
                   }
                   
                 });
-        
+        console.log("JJJJJGHDUHDJJJJJGHDUHDJJJJJGHDUHDJJJJJGHDUHDJJJJJGHDUHDJJJJJGHDUHD");
           }
             
     
