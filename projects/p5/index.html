@@ -107,12 +107,14 @@
                   console.log(response);
                   
                   // get object with face coordinates as determined by GCV
-                  
+                
                   // TODO - handle "no face" condition
                   
-                  
-                  
-                  var faceVertices = response.responses[0].faceAnnotations[0].boundingPoly.vertices;
+                if (response.responses[0].faceAnnotations == null){   
+                    console.log("face not found");
+                }
+                else{   
+                    var faceVertices = response.responses[0].faceAnnotations[0].boundingPoly.vertices;
 
                   console.log(faceVertices);
                   
@@ -156,9 +158,14 @@
                   if (doFaceCapture) {
                     getImageData('FACE_DETECTION');
                   }
+                }                  
+                  
+                  
+                  
+                  
                   
                 });
-        console.log("JJJJJGHDUHDJJJJJGHDUHDJJJJJGHDUHDJJJJJGHDUHDJJJJJGHDUHDJJJJJGHDUHD");
+        
           }
             
     
