@@ -10,6 +10,7 @@
 
     </head>
     <body>
+        
         <h1>Fun with Camera, Canvas and Google Cloud Vision Face Detection</h1>
         <p>When you click the button, the script will capture the current video frame, send it to Google Cloud Vision, get the bounding box of the face from the response data (and a TODO is to handle the "no face" condition, which currently stops the script), then pastes just the face into another canvas, making a collage of faces.  Another update is to make it copy/paste <em>all</em> the faces in the image;  currently, it just handles the first.</p>
         <video id="player" width="100" height="100" controls autoplay></video>
@@ -43,6 +44,12 @@
           var requestBody, nextX = 0, nextY = 0;
           var doFaceCapture = false;
           
+          
+          
+          //image
+          var image = new Image(60,60);
+          image.src = 'download.jpg';
+          
           collageCanvas.width = window.innerWidth;
           collageCanvas.height = 300;
           
@@ -55,7 +62,7 @@
           
           startCaptureButton.addEventListener('click', () => {
             doFaceCapture = true;
-            
+            clearCanvas();
             // start capture loop
             getImageData('FACE_DETECTION');
           });
@@ -112,8 +119,12 @@
                   
                 if (response.responses[0].faceAnnotations == null){   
                     console.log("face not found");
+clearCanvas();
+                    collageContext.drawImage(image,0,0);
                 }
                 else{   
+                    
+                    
                     var faceVertices = response.responses[0].faceAnnotations[0].boundingPoly.vertices;
 
                   console.log(faceVertices);
@@ -168,7 +179,13 @@
         
           }
             
-    
+    function clearCanvas(){
+                    frameContext.clearRect(0,0,frameCanvas.width, frameCanvas.height);;
+                    collageContext.clearRect(0,0,collageCanvas.width, collageCanvas.height);;
+            
+                    nextX = 0;
+                    nextY = 0;        
+    }
     
         </script>
     </body>
