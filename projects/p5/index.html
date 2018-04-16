@@ -18,7 +18,7 @@
         <canvas id="frameCanvas" width=320 height=240></canvas>
         <canvas id="collageCanvas"></canvas>
         <div id="imageData" ></div>
-        
+        <div id="labelData">Labels</div>
         
 
 
@@ -38,6 +38,7 @@
           const collageContext = collageCanvas.getContext('2d');
           const startCaptureButton = document.getElementById('startCapture');
           const dataDiv = document.getElementById('imageData');
+          const labelDiv = document.getElementById('labelData');
           const visionApiEndpoint = "https://vision.googleapis.com/v1/images:annotate";
           var requestBody, nextX = 0, nextY = 0;
 
@@ -111,6 +112,9 @@
                     //console.log(response);
                     var labels = response.responses[0].labelAnnotations;
                     console.log(labels);
+                    labels.forEach(function(elem){
+                       console.log(elem); 
+                    });
                     
 
                 }                  
@@ -230,6 +234,7 @@
             
                     nextX = 0;
                     nextY = 0;        
+                    
     }
     
         </script>
