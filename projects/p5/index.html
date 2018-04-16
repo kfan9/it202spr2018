@@ -18,7 +18,10 @@
         <canvas id="frameCanvas" width=320 height=240></canvas>
         <canvas id="collageCanvas"></canvas>
         <div id="imageData" ></div>
-        <div id="labelData">Labels</div>
+        <div id="labelData">
+        <h5>Labels</h5>
+        <ul id="labelList"></ul>
+        </div>
         
 
 
@@ -38,7 +41,7 @@
           const collageContext = collageCanvas.getContext('2d');
           const startCaptureButton = document.getElementById('startCapture');
           const dataDiv = document.getElementById('imageData');
-          const labelDiv = document.getElementById('labelData');
+          const labelList = document.getElementById('labelList');
           const visionApiEndpoint = "https://vision.googleapis.com/v1/images:annotate";
           var requestBody, nextX = 0, nextY = 0;
 
@@ -105,7 +108,7 @@
 
                 if (response.responses[0].labelAnnotations == null){   
                     console.log("label not found");
-                    
+                    alert("no apporiate labels detected");   
                 }
                 else{   
                     console.log("label found");
@@ -113,7 +116,9 @@
                     var labels = response.responses[0].labelAnnotations;
                     console.log(labels);
                     labels.forEach(function(elem){
-                       console.log(elem); 
+                       var perList = document.createElement('li');
+                       perList.appendChild(document.createTextNode("description: " + elem.description + " score: " + elem.score));
+                       labelList.appendChild(perList);
                     });
                     
 
@@ -234,7 +239,7 @@
             
                     nextX = 0;
                     nextY = 0;        
-                    
+                    labelList.innerHTML = "";
     }
     
         </script>
