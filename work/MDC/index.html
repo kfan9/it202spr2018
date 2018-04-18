@@ -19,7 +19,16 @@
         
         
         <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js"></script>
-        
+              $("#one").show();
+      
+      // when a nav link is clicked, hide screens then show target
+      
+      $("nav a").on("click", function() {
+      $(".screen").hide();
+      var targetSelector = $(this).attr("href");
+      console.log(targetSelector)
+      $(targetSelector).show();
+      });
         
         <script type="text/javascript">
           window.mdc.autoInit();

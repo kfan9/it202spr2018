@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Big Project</title>
+      <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css" rel="stylesheet">
+   </head>
+   <body>
+      <!-- navigator -->
+      <nav id="basic-tab-bar" class="mdc-tab-bar">
+         <a class="mdc-tab mdc-tab--active" href="#one" id="navOne">Home</a>
+         <a class="mdc-tab" href="#two" id="navTwo">Merchandise</a>
+         <a class="mdc-tab" href="#three" id="navThree">About Us</a>
+         <span class="mdc-tab-bar__indicator"></span>
+      </nav>
+      <!-- screen 1 s1 -->
+      <div id="one" class="screen">
+         <button class="mdc-button">
+         Button
+         </button>
+      </div>
+      <!-- screen 2 s2 -->
+      <div id="two" class="screen">
+         <div class="mdc-text-field nav" data-mdc-auto-init="MDCTextField">
+            <input type="text" id="my-text-field" class="mdc-text-field__input">
+            <label class="mdc-floating-label" for="my-text-field">Hint text</label>
+            <div class="mdc-line-ripple"></div>
+         </div>
+         <ul class="mdc-list">
+            <li class="mdc-list-item">Single-line item</li>
+            <li class="mdc-list-item">Single-line item</li>
+            <li class="mdc-list-item">Single-line item</li>
+         </ul>
+         </div>
+         <!-- screen 3 s3 -->
+         <div id="three" class="screen">
+            <h1>Third</h1>
+         </div>
+      </div>
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+      <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js"></script>
+      <script type="text/javascript">
+         $(document).ready(function(){
+         // show the home screen
+         $("#one").show();
+         $("#two").hide();
+         $("#three").hide();
+         
+         // when a nav link is clicked, hide screens then show target
+         
+         $("nav a").on("click", function() {
+         $(".screen").hide();
+         var targetSelector = $(this).attr("href");
+         console.log(targetSelector)
+         $(targetSelector).show();
+         });
+         });
+         
+         
+         
+             window.mdc.autoInit();
+           
+      </script>
+   </body>
+</html>
