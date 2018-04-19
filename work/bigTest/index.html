@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Big Project</title>
+      <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css" rel="stylesheet">
+      <link rel="stylesheet" href="css/style.css">
+      <script src="ready.js"></script>
+   </head>
+   <body class="mdc-typography demo-body">
+      <!-- navigator -->
+      <!--
+      <nav id="basic-tab-bar" class="mdc-tab-bar">
+         <a class="mdc-tab mdc-tab--active" href="#one" id="navOne">Home</a>
+         <a class="mdc-tab" href="#two" id="navTwo">Your List</a>
+         <a class="mdc-tab" href="#three" id="navThree">Graph</a>
+         <span class="mdc-tab-bar__indicator"></span>
+      </nav>
+-->
+<!-- drawer test -->
+ <div class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <a href="#" class="demo-menu material-icons mdc-toolbar__menu-icon">menu</a>
+          <span class="mdc-toolbar__title catalog-title">Temporary Drawer</span>
+        </section>
+      </div>
+    </div>
+
+    <aside class="mdc-drawer mdc-drawer--temporary demo-drawer">
+      <nav class="mdc-drawer__drawer">
+        <header class="mdc-drawer__header">
+          <div class="mdc-drawer__header-content mdc-theme--text-primary-on-primary mdc-theme--primary-bg">
+            Header here
+          </div>
+        </header>
+        <nav class="mdc-drawer__content mdc-list-group">
+          <div id="icon-with-text-demo" class="mdc-list">
+            <a class="mdc-list-item mdc-list-item--selected demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+            </a>
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
+            </a>
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
+            </a>
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
+            </a>
+          </div>
+
+          <hr class="mdc-list-divider">
+
+          <div class="mdc-list">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">email</i>All Mail
+            </a>
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">delete</i>Trash
+            </a>
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">report</i>Spam
+            </a>
+          </div>
+        </nav>
+      </nav>
+    </aside>
+
+<div class="content">
+  <nav class="mdc-drawer mdc-drawer--permanent mdc-typography">
+    <nav id="icon-with-text-demo" class="mdc-list">
+      <a class="mdc-list-item mdc-list-item--activated" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+      </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
+      </a>
+    </nav>
+  </nav>
+  <main>
+    Page content goes here.
+  </main>
+</div>
+      <!-- screen 1 s1 -->
+      <div id="one" class="screen">
+         <section class="hero">
+            <div class="mdc-card demo-card screen-card">
+               <a class="mdc-card__primary-action" href="#">
+                  <div class="demo-card__primary">
+                     <h2 class="demo-card__title mdc-typography--title" >Where do you want to live?</h2>
+                  </div>
+                  <div class="demo-card__secondary mdc-typography--body1">
+                     Search by any option and see the housing price and weather!
+                  </div>
+               </a>
+               <img src="image/good2.jpg" class="home-image">
+               <div class="mdc-text-field nav center-item" data-mdc-auto-init="MDCTextField">
+                  <input type="text" id="my-text-field" class="mdc-text-field__input">
+                  <label class="mdc-floating-label" for="my-text-field">City*</label>
+                  <div class="mdc-line-ripple"></div>
+               </div>
+               <div class="mdc-text-field nav center-item" data-mdc-auto-init="MDCTextField">
+                  <input type="text" id="my-text-field" class="mdc-text-field__input">
+                  <label class="mdc-floating-label" for="my-text-field">State/Country</label>
+                  <div class="mdc-line-ripple"></div>
+               </div>
+               <button class="mdc-button center-item">
+               Search
+               </button>
+            </div>
+      </div>
+      </section>
+      </div>
+      <!-- screen 2 s2 -->
+      <div id="two" class="screen">
+         <section class="hero">
+            <div class="mdc-card demo-card screen-card">
+               <a class="mdc-card__primary-action" href="#">
+                  <div class="demo-card__primary">
+                     <h2 class="demo-card__title mdc-typography--title">Oops! You haven't added anything.</h2>
+                     <h3 class="demo-card__subtitle mdc-typography--subheading1">go back home and find where you want to live.</h3>
+                  </div>
+               </a>
+               <div class="mdc-card__actions">
+                  <div class="mdc-card__action-buttons">
+                     <button class="mdc-button mdc-card__action mdc-card__action--button">Read</button>
+                     <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
+                  </div>
+               </div>
+            </div>
+         </section>
+      </div>
+      <!-- screen 3 s3 -->
+      <div id="three" class="screen">
+         <h1>Third</h1>
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+      <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js"></script>
+          <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
+      <script type="text/javascript">
+         $(document).ready(function(){
+         // show the home screen
+         $("#one").show();
+         $("#two").hide();
+         $("#three").hide();
+         
+         // when a nav link is clicked, hide screens then show target
+         
+         $("nav a").on("click", function() {
+         $(".screen").hide();
+         var targetSelector = $(this).attr("href");
+         console.log(targetSelector)
+         $(targetSelector).show();
+         });
+         });
+         
+         // weather site https://developer.worldweatheronline.com/
+         // weather key 9ef112f497634e67a6094319181804
+         // nasa api key 9EvW4lYZFuRDhtcajSSu0XP5vePsG3xJXUQhLGRI
+         
+             window.mdc.autoInit();
+             
+             //drawer stuff
+                   demoReady(function() {
+        var drawerEl = document.querySelector('.mdc-drawer');
+        var MDCTemporaryDrawer = mdc.drawer.MDCTemporaryDrawer;
+        var drawer = new MDCTemporaryDrawer(drawerEl);
+        document.querySelector('.demo-menu').addEventListener('click', function() {
+          drawer.open = true;
+        });
+        drawerEl.addEventListener('MDCTemporaryDrawer:open', function() {
+          console.log('Received MDCTemporaryDrawer:open');
+        });
+        drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
+          console.log('Received MDCTemporaryDrawer:close');
+        });
+
+        // Demonstrate application of --activated modifier to drawer menu items
+        var activatedClass = 'mdc-list-item--selected';
+        document.querySelector('.mdc-drawer__drawer').addEventListener('click', function(event) {
+          var el = event.target;
+          while (el && !el.classList.contains('mdc-list-item')) {
+            el = el.parentElement;
+          }
+          if (el) {
+            var activatedItem = document.querySelector('.' + activatedClass);
+            if (activatedItem) {
+              activatedItem.classList.remove(activatedClass);
+            }
+            event.target.classList.add(activatedClass);
+          }
+        });
+
+        var radioEl = document.querySelector('#demo-radio-buttons');
+        radioEl.addEventListener('change', function(e) {
+          drawerEl.classList.remove('demo-drawer--custom');
+          drawerEl.classList.remove('demo-drawer--accessible');
+
+          if(e.target.id === 'theme-radio-accessible') {
+            drawerEl.classList.add('demo-drawer--accessible');
+          } else if(e.target.id === 'theme-radio-custom') {
+            drawerEl.classList.add('demo-drawer--custom');
+          }
+        });
+
+        var rtlToggleBtn = document.querySelector('.demo-toolbar-example-heading__rtl-toggle-button');
+        rtlToggleBtn.addEventListener('click', function(event) {
+          document.body.setAttribute('dir', document.body.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
+        });
+      });
+           
+      </script>
+   </body>
+</html>
