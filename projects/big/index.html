@@ -35,6 +35,9 @@
                <a class="mdc-list-item" href="#four">
                <i class="material-icons mdc-list-item__graphic" aria-hidden="true"></i>Graph
                </a>
+               <a class="mdc-list-item" href="#five">
+               <i class="material-icons mdc-list-item__graphic" aria-hidden="true"></i>Geolocation
+               </a>               
             </nav>
          </nav>
       </aside>
@@ -70,303 +73,346 @@
       </div>
       <!-- screen 2 s2 Searched-->
       <div id="two" class="screen">
-
       </div>
       <!-- screen 3 s3 Your List -->
       <div id="three" class="screen">
-
       </div>
-      
-       <!-- screen 4 s4 Your List -->
+      <!-- screen 4 s4 graph -->
       <div id="four" class="screen">
-          <div id="table_div"></div>
+         <div id="table_div"></div>
       </div>
-      
-      
-      
-      
+      <!-- screen 5 s5 Geolocation -->
+      <div id="five" class="screen">
+             <div id="googleMap" style="height:400px;width:100%;"></div>
+             
+      </div>      
       <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
       <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js"></script>
-      
-      
       <script type="text/javascript">
-      google.charts.load('current', {'packages':['table']});
-      google.charts.setOnLoadCallback(graphBasedOnData);            
+         google.charts.load('current', {'packages':['table']});
+         google.charts.setOnLoadCallback(graphBasedOnData);            
+               
+         
+         // indexeddb ------------------------------------------------------------------------------------------------------------------
+           window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+         
+           if (!window.indexedDB) {
+               window.alert("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
+           }
+         
+           var db;
+           var request = window.indexedDB.open("UserData", 1);
+           
+           request.onerror = function(e){
+               console("on error: " + e.target.errorCode);
+           }
+          
+           request.onsuccess = function(e){
+               db = request.result;
+               console.log("success:" + db);
+           }     
+           
+           request.onupgradeneeded = function(e){
+               var db = e.target.result;
+               var objectStore = db.createObjectStore("cityName", {keyPath: "cityName", autoIncrement: true});
+               
+           }           
+         
+         
+            $(document).ready(function(){
+            // show the home screen
+            $("#one").show();
+            $("#two").hide();
+            $("#three").hide();
+            $("#four").hide();
+            $("#five").hide();
             
-
-      // indexeddb ------------------------------------------------------------------------------------------------------------------
-        window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
- 
-        if (!window.indexedDB) {
-            window.alert("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
-        }
-
-        var db;
-        var request = window.indexedDB.open("UserData", 1);
-        
-        request.onerror = function(e){
-            console("on error: " + e.target.errorCode);
-        }
-       
-        request.onsuccess = function(e){
-            db = request.result;
-            console.log("success:" + db);
-        }     
-        
-        request.onupgradeneeded = function(e){
-            var db = e.target.result;
-            var objectStore = db.createObjectStore("cityName", {keyPath: "cityName", autoIncrement: true});
+            // when a nav link is clicked, hide screens then show target
             
-        }           
-
-      
-         $(document).ready(function(){
-         // show the home screen
-         $("#one").show();
-         $("#two").hide();
-         $("#three").hide();
-         $("#four").hide();
-         
-         // when a nav link is clicked, hide screens then show target
-         
-         $(".menu-burger").on("click", function(){
-             document.querySelector(".mdc-drawer--temporary").MDCTemporaryDrawer.open = true;  
-         });
-         
-         
-         $("nav a").on("click", function() {
-         $(".screen").hide();
-         var targetSelector = $(this).attr("href");
-         $(targetSelector).show();
-         document.querySelector(".mdc-drawer--temporary").MDCTemporaryDrawer.open = false; 
-         document.querySelector('#city-tf').MDCTextField.value = "";
-         document.querySelector('#state-country-tf').MDCTextField.value = "";
-         if(targetSelector =='#three'){
-             listCurList();
-         }
-         if(targetSelector =='#four'){
-             graphBasedOnData();
-         }
-         });
-         });
-         
-         
-         function listCurList(){
-             clearBox('three');
-            db = request.result;
-            var dataSet = [];
-            var db = request.result;
-            var objectStore = db.transaction("cityName").objectStore("cityName");
-            
-            objectStore.openCursor().onsuccess = function(e){
-                var cursor = e.target.result;
-                
-                if(cursor){
-                    var temp = [cursor.key, 
-                                cursor.value.stateCountryName, 
-                                cursor.value.temp,
-                                cursor.value.date,
-                                cursor.value.desc]; 
-                    dataSet.push(temp);
-                    cursor.continue();
-                    
-                }else{
-                    console.log("end of db");
-                }
-            }
-setTimeout(function()
-{
-    $('#three').append('<ul class="mdc-list mdc-list--two-line">');
-    for(i=0;i<dataSet.length; i++){
-         $('#three').append(
-            '<li class="mdc-list-item">'+
-    '<span class="mdc-list-item__text">'+
-      dataSet[i][0]+ ', ' + dataSet[i][1] + ' ' + dataSet[i][3] +
-      '<span class="mdc-list-item__secondary-text">'+
-        dataSet[i][2]+ ascii(176) + 'C  ' + dataSet[i][4] +
-      '</span>'+
-    '</span>'+
-  '</li>'
-  );
-    }
-     $('#three').append('</ul>');
-}, 100);                 
-            
-
-            
- 
-         }
-
-         function graphBasedOnData(){
-             clearBox('table_div');
-            db = request.result;
-            var dataSet = [];
-              console.log("attempting to log");
-            var data = new google.visualization.DataTable();
-            
-            data.addColumn('string', 'City');
-            data.addColumn('string', 'State');
-            data.addColumn('number', 'Weather' + ascii(176) + 'C');
-            data.addColumn('string', 'Date');
-            data.addColumn('string', 'Description');
-
-            var db = request.result;
-            var objectStore = db.transaction("cityName").objectStore("cityName");
-            objectStore.openCursor().onsuccess = function(e){
-                var cursor = e.target.result;
-                                  
-                if(cursor){
-                    /*
-                    console.log( cursor.key+
-                                 cursor.value.stateCountryName,+
-                                 cursor.value.temp + ascii(176) + "C"+
-                                 cursor.value.date+
-                                 cursor.value.desc);
-                                 */
-                    var temp = [cursor.key, 
-                                cursor.value.stateCountryName, 
-                                cursor.value.temp,
-                                cursor.value.date,
-                                cursor.value.desc];   
-                                
-                    
-                    cursor.continue();
-                    dataSet.push(temp);
-                }else{
-                    console.log("end of db" );
-                }
-                
-            }
-            
-setTimeout(function()
-{
-            var dd = dataSet;
-            data.addRows(dd);
-        var table = new google.visualization.Table(document.getElementById('table_div'));
-
-        table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
-}, 100);            
-/*
-            console.log("dataSet");
-            console.log(dataSet);
-*/
-             
-             
-         }
-         
-         
-         
-         function getWeatherAndJoke(){
-             
-             clearBox('two');
-             var city, state;
-             var joke;
-             city = document.querySelector('#city-tf').MDCTextField.value;
-             state = document.querySelector('#state-country-tf').MDCTextField.value; 
-             request = window.indexedDB.open("UserData", 1);
-
-            
-            $.ajax({
-              type: "GET",
-              url: "https://icanhazdadjoke.com",
-              success: function(data) {
-                joke = data.joke;
-                
-              },
-              dataType: "json"
+            $(".menu-burger").on("click", function(){
+                document.querySelector(".mdc-drawer--temporary").MDCTemporaryDrawer.open = true;  
             });
+            
+            
+            $("nav a").on("click", function() {
+            $(".screen").hide();
+            var targetSelector = $(this).attr("href");
+            $(targetSelector).show();
+            document.querySelector(".mdc-drawer--temporary").MDCTemporaryDrawer.open = false; 
+            document.querySelector('#city-tf').MDCTextField.value = "";
+            document.querySelector('#state-country-tf').MDCTextField.value = "";
+            if(targetSelector =='#three'){
+                listCurList();
+            }
+            if(targetSelector =='#four'){
+                graphBasedOnData();
+            }
+
+            });
+            });
+            
+            var infoWindow;
+function myMap() {
+    var latTemp,lngTemp;
+    infoWindow = new google.maps.InfoWindow;
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+    latTemp = pos.lat;
+    lngTemp = pos.lng;
+      infoWindow.setPosition(pos);
+
+      infoWindow.setContent('Location found.' + latTemp + ', ' + lngTemp);
+      infoWindow.open(map);
+      map.setCenter(pos);
+    }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
+
+
+    
+    
+    
+var myCenter = new google.maps.LatLng(latTemp, lngTemp);
+var mapProp = {center:myCenter, zoom:12, scrollwheel:false, draggable:false, mapTypeId:google.maps.MapTypeId.ROADMAP};
+var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+var marker = new google.maps.Marker({position:myCenter });
+marker.setMap(map);
+}    
+            function listCurList(){
+                clearBox('three');
+               db = request.result;
+               var dataSet = [];
+               var db = request.result;
+               var objectStore = db.transaction("cityName").objectStore("cityName");
+               
+               objectStore.openCursor().onsuccess = function(e){
+                   var cursor = e.target.result;
+                   
+                   if(cursor){
+                       var temp = [cursor.key, 
+                                   cursor.value.stateCountryName, 
+                                   cursor.value.temp,
+                                   cursor.value.date,
+                                   cursor.value.desc]; 
+                       dataSet.push(temp);
+                       cursor.continue();
+                       
+                   }else{
+                       console.log("end of db");
+                   }
+               }
+         setTimeout(function()
+         {
+         $('#three').append('<ul class="mdc-list mdc-list--two-line">');
+         for(i=0;i<dataSet.length; i++){
+            $('#three').append(
+               '<li class="mdc-list-item">'+
+         '<span class="mdc-list-item__text">'+
+         dataSet[i][0]+ ', ' + dataSet[i][1] + ' ' + dataSet[i][3] +
+         '<span class="mdc-list-item__secondary-text">'+
+           dataSet[i][2]+ ascii(176) + 'C  ' + dataSet[i][4] +
+         '</span>'+
+         '</span>'+
+         '</li>'
+         );
+         }
+         $('#three').append('</ul>');
+         }, 100);                 
+               
          
+               
          
-             var req = new XMLHttpRequest();
-             req.open('GET', 'https://api.weatherbit.io/v2.0/current?city=' + city + ',' + state + '&key=a708d5fe9c2141f493b8be489740df84');
-             req.onload = function(){
-                 var curWeather = JSON.parse(req.responseText);
+            }
+         
+            function graphBasedOnData(){
+                clearBox('table_div');
+               db = request.result;
+               var dataSet = [];
+                 console.log("attempting to log");
+               var data = new google.visualization.DataTable();
+               
+               data.addColumn('string', 'City');
+               data.addColumn('string', 'State');
+               data.addColumn('number', 'Weather' + ascii(176) + 'C');
+               data.addColumn('string', 'Date');
+               data.addColumn('string', 'Description');
+         
+               var db = request.result;
+               var objectStore = db.transaction("cityName").objectStore("cityName");
+               objectStore.openCursor().onsuccess = function(e){
+                   var cursor = e.target.result;
+                                     
+                   if(cursor){
+                       /*
+                       console.log( cursor.key+
+                                    cursor.value.stateCountryName,+
+                                    cursor.value.temp + ascii(176) + "C"+
+                                    cursor.value.date+
+                                    cursor.value.desc);
+                                    */
+                       var temp = [cursor.key, 
+                                   cursor.value.stateCountryName, 
+                                   cursor.value.temp,
+                                   cursor.value.date,
+                                   cursor.value.desc];   
+                                   
+                       
+                       cursor.continue();
+                       dataSet.push(temp);
+                   }else{
+                       console.log("end of db" );
+                       
+                   }
+                   
+               }
+               
+         setTimeout(function()
+         {
+               var dd = dataSet;
+               data.addRows(dd);
+           var table = new google.visualization.Table(document.getElementById('table_div'));
+         
+           table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+         }, 100);            
+         /*
+               console.log("dataSet");
+               console.log(dataSet);
+         */
                 
-                $("#two").append(
-                 '<section class="hero">' +
-                    '<div class="mdc-card demo-card screen-card">' +
-                       '<a class="mdc-card__primary-action" href="#">' +
-                          '<div class="demo-card__primary">' +
-                             '<h2 class="demo-card__title mdc-typography--title">' + curWeather.data[0].city_name + ', ' + curWeather.data[0].state_code  +  '</h2>' +
-                             '<h3 class="demo-card__subtitle mdc-typography--subheading1">' + curWeather.data[0].datetime + '</h3>'+
-                             '<h3 class="demo-card__subtitle mdc-typography--subheading1">' + curWeather.data[0].weather.description + '</h3>'+
-                             '<h3 class="demo-card__subtitle mdc-typography--subheading1">' + curWeather.data[0].temp + ascii(176) + 'C</h3>'+
-                             '<h3 class="demo-card__subtitle mdc-typography--subheading1">Joke of the search:</h3>'+
-                             '<h3 class="demo-card__subtitle mdc-typography--subheading1">' + joke + '</h3>'+    
-                            '<div id="hero-js-select" class="mdc-select">' +
-                              '<select class="mdc-select__native-control">' +
-                                '<option value="yes-no-funny" selected>Yes or No</option>' +
-                                '<option value="yes-funny">Yes</option>' +
-                                '<option value="no-funny">No</option>' +
-                              '</select>' +
-                              '<div class="mdc-select__label mdc-select__label--float-above">Funny?</div>' +
-                              '<div class="mdc-select__bottom-line"></div>' +
-                            '</div>' +                             
-                          '</div>'+
-                       '</a>'+
-                       '<div class="mdc-card__actions">'+
-                          '<div class="mdc-card__action-buttons">'+
-                             '<button class="mdc-button mdc-card__action mdc-card__action--button" id="testing123">Add</button>'+
+                
+            }
+            
+            
+            
+            function getWeatherAndJoke(){
+                
+                clearBox('two');
+                var city, state;
+                var joke;
+                city = document.querySelector('#city-tf').MDCTextField.value;
+                state = document.querySelector('#state-country-tf').MDCTextField.value; 
+                request = window.indexedDB.open("UserData", 1);
+         
+               
+               $.ajax({
+                 type: "GET",
+                 url: "https://icanhazdadjoke.com",
+                 success: function(data) {
+                   joke = data.joke;
+                   
+                 },
+                 dataType: "json"
+               });
+            
+            
+                var req = new XMLHttpRequest();
+                req.open('GET', 'https://api.weatherbit.io/v2.0/current?city=' + city + ',' + state + '&key=a708d5fe9c2141f493b8be489740df84');
+                req.onload = function(){
+                    var curWeather = JSON.parse(req.responseText);
+                   
+                   $("#two").append(
+                    '<section class="hero">' +
+                       '<div class="mdc-card demo-card screen-card">' +
+                          '<a class="mdc-card__primary-action" href="#">' +
+                             '<div class="demo-card__primary">' +
+                                '<h2 class="demo-card__title mdc-typography--title">' + curWeather.data[0].city_name + ', ' + curWeather.data[0].state_code  +  '</h2>' +
+                                '<h3 class="demo-card__subtitle mdc-typography--subheading1">' + curWeather.data[0].datetime + '</h3>'+
+                                '<h3 class="demo-card__subtitle mdc-typography--subheading1">' + curWeather.data[0].weather.description + '</h3>'+
+                                '<h3 class="demo-card__subtitle mdc-typography--subheading1">' + curWeather.data[0].temp + ascii(176) + 'C</h3>'+
+                                '<h3 class="demo-card__subtitle mdc-typography--subheading1">Joke of the search:</h3>'+
+                                '<h3 class="demo-card__subtitle mdc-typography--subheading1">' + joke + '</h3>'+    
+                               '<div id="hero-js-select" class="mdc-select">' +
+                                 '<select class="mdc-select__native-control">' +
+                                   '<option value="yes-no-funny" selected>Yes or No</option>' +
+                                   '<option value="yes-funny">Yes</option>' +
+                                   '<option value="no-funny">No</option>' +
+                                 '</select>' +
+                                 '<div class="mdc-select__label mdc-select__label--float-above">Funny?</div>' +
+                                 '<div class="mdc-select__bottom-line"></div>' +
+                               '</div>' +                             
+                             '</div>'+
+                          '</a>'+
+                          '<div class="mdc-card__actions">'+
+                             '<div class="mdc-card__action-buttons">'+
+                                '<button class="mdc-button mdc-card__action mdc-card__action--button" id="add-btn">Add</button>'+
+                             '</div>'+
                           '</div>'+
                        '</div>'+
-                    '</div>'+
-                 '</section>'
-                    );
+                    '</section>'
+                       );
+                       $("#add-btn").click(function(){
+               db = request.result;
+                       var addReq = db.transaction(["cityName"], "readwrite").
+                                   objectStore("cityName").
+                                   add({ cityName: curWeather.data[0].city_name, 
+                           stateCountryName: curWeather.data[0].state_code, 
+                           date: curWeather.data[0].datetime,
+                           desc: curWeather.data[0].weather.description,
+                           temp:curWeather.data[0].temp,
+                           jokeText: joke, 
+                           funny:true
+                           });
+                           
+                       addReq.onsuccess = function(e){
+                           console.log("add success " + e);
+                       }
+                       
+                       addReq.onerror = function(e){
+                           console.log("add fail " + e);
+                       }
+         
+            });
+         
 
-            db = request.result;
-                    var addReq = db.transaction(["cityName"], "readwrite").
-                                objectStore("cityName").
-                                add({ cityName: curWeather.data[0].city_name, 
-                        stateCountryName: curWeather.data[0].state_code, 
-                        date: curWeather.data[0].datetime,
-                        desc: curWeather.data[0].weather.description,
-                        temp:curWeather.data[0].temp,
-                        jokeText: joke, 
-                        funny:true
-                        });
-                        
-                    addReq.onsuccess = function(e){
-                        console.log("add success " + e);
-                    }
-                    
-                    addReq.onerror = function(e){
-                        console.log("add fail " + e);
-                    }
-
+               
+                }
+         
             
-             }
-
-
-         $("#one").hide();
-         $("#two").show();
-         $("#three").hide();
-             req.send();
-         }
-         window.onload = function() {
-             
-         document.getElementById("home-search").onclick = function fun() {
-         getWeatherAndJoke();
          
-         //validation code to see State field is mandatory.  
-         }
-         }
+            $("#one").hide();
+            $("#two").show();
+            $("#three").hide();
+                req.send();
+            }
+            window.onload = function() {
+                
+            document.getElementById("home-search").onclick = function fun() {
+            getWeatherAndJoke();
+            
+            //validation code to see State field is mandatory.  
+            }
+            }
+            
+            // weather use a708d5fe9c2141f493b8be489740df84 - https://www.weatherbit.io/account/dashboard
+            //https://api.weatherbit.io/v2.0/current?city=Chicago,IL&key=a708d5fe9c2141f493b8be489740df84
+            
+            // geolocation use AIzaSyAb_-dqN5HXKbTZKOrR-EUduVUv920I0Hw
+            // https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAb_-dqN5HXKbTZKOrR-EUduVUv920I0Hw
+           function clearBox(elementID)
+           {
+               document.getElementById(elementID).innerHTML = "";
+           }
+            function ascii (a) { return String.fromCharCode(a); }
+            
+            
+                window.mdc.autoInit();
+                
          
-         // use a708d5fe9c2141f493b8be489740df84 - https://www.weatherbit.io/account/dashboard
-         //https://api.weatherbit.io/v2.0/current?city=Chicago,IL&key=a708d5fe9c2141f493b8be489740df84
-        function clearBox(elementID)
-        {
-            document.getElementById(elementID).innerHTML = "";
-        }
-         function ascii (a) { return String.fromCharCode(a); }
          
-         
-             window.mdc.autoInit();
-             
-
-
-        
+           
       </script>
+          <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBx9MZBbuS-WmsgO498ZEulTThTMuMjeqE&callback=myMap">
+    </script>
    </body>
 </html>
