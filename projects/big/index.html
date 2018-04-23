@@ -5,13 +5,14 @@
       <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
       <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css" rel="stylesheet">
       <link rel="stylesheet" href="css/style.css">
+      <script src="js/app.js"></script>
    </head>
    <body>
       <header class="mdc-top-app-bar">
          <div class="mdc-top-app-bar__row">
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                <a href="#" class="material-icons mdc-top-app-bar__navigation-icon menu-burger">menu</a>
-               <span class="mdc-top-app-bar__title">Where do you want to live?</span>
+               <span class="mdc-top-app-bar__title">Location Information</span>
             </section>
          </div>
       </header>
@@ -47,10 +48,10 @@
             <div class="mdc-card demo-card screen-card">
                <a class="mdc-card__primary-action" href="#">
                   <div class="demo-card__primary">
-                     <h2 class="demo-card__title mdc-typography--title" > An app to show information about the location.</h2>
+                     <h2 class="demo-card__title mdc-typography--title" > An app to show information about the location and SOMETHING ELSE.</h2>
                   </div>
                   <div class="demo-card__secondary mdc-typography--body1">
-                     Search by any option and see the housing price and weather!
+                     Search by city and State/Country!
                   </div>
                </a>
                <img src="image/good2.jpg" class="home-image">
@@ -111,7 +112,7 @@
           
            request.onsuccess = function(e){
                db = request.result;
-               console.log("success:" + db);
+               //console.log("success:" + db);
            }     
            
            request.onupgradeneeded = function(e){
@@ -208,7 +209,7 @@ marker.setMap(map);
                        cursor.continue();
                        
                    }else{
-                       console.log("end of db");
+                       //console.log("end of db");
                    }
                }
          setTimeout(function()
@@ -238,7 +239,7 @@ marker.setMap(map);
                 clearBox('table_div');
                db = request.result;
                var dataSet = [];
-                 console.log("attempting to log");
+                 //console.log("attempting to log");
                var data = new google.visualization.DataTable();
                
                data.addColumn('string', 'City');
@@ -270,7 +271,7 @@ marker.setMap(map);
                        cursor.continue();
                        dataSet.push(temp);
                    }else{
-                       console.log("end of db" );
+                       //console.log("end of db" );
                        
                    }
                    
@@ -369,6 +370,7 @@ marker.setMap(map);
                        
                        addReq.onerror = function(e){
                            console.log("add fail " + e);
+                           alert("This city is already in your list");
                        }
          
             });
@@ -411,6 +413,7 @@ marker.setMap(map);
          
            
       </script>
+      
           <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBx9MZBbuS-WmsgO498ZEulTThTMuMjeqE&callback=myMap">
     </script>
