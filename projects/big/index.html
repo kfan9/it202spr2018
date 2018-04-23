@@ -74,6 +74,7 @@
       </div>
       <!-- screen 3 s3 Your List -->
       <div id="three" class="screen">
+
       </div>
       
        <!-- screen 4 s4 Your List -->
@@ -153,10 +154,9 @@
          
          
          function listCurList(){
+             clearBox('three');
             db = request.result;
-            console.log("success:" + db);
-
-            console.log("attempting to log");
+            var dataSet = [];
             var db = request.result;
             var objectStore = db.transaction("cityName").objectStore("cityName");
             
@@ -164,12 +164,38 @@
                 var cursor = e.target.result;
                 
                 if(cursor){
+                    var temp = [cursor.key, 
+                                cursor.value.stateCountryName, 
+                                cursor.value.temp,
+                                cursor.value.date,
+                                cursor.value.desc]; 
+                    dataSet.push(temp);
                     cursor.continue();
                     
                 }else{
                     console.log("end of db");
                 }
             }
+setTimeout(function()
+{
+    $('#three').append('<ul class="mdc-list mdc-list--two-line">');
+    for(i=0;i<dataSet.length; i++){
+         $('#three').append(
+            '<li class="mdc-list-item">'+
+    '<span class="mdc-list-item__text">'+
+      dataSet[i][0]+ ', ' + dataSet[i][1] + ' ' + dataSet[i][3] +
+      '<span class="mdc-list-item__secondary-text">'+
+        dataSet[i][2]+ ascii(176) + 'C  ' + dataSet[i][4] +
+      '</span>'+
+    '</span>'+
+  '</li>'
+  );
+    }
+     $('#three').append('</ul>');
+}, 100);                 
+            
+
+            
  
          }
 
