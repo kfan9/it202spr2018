@@ -2,6 +2,7 @@
 <html>
    <head>
       <title>Big Project</title>
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
       <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css" rel="stylesheet">
       <link rel="stylesheet" href="css/style.css">
    </head>
@@ -73,10 +74,11 @@
       </div>
       <!-- screen 3 s3 Your List -->
       <div id="three" class="screen">
-
       </div>
+      
+       <!-- screen 4 s4 Your List -->
       <div id="four" class="screen">
-         <h1>forth</h1>
+          <div id="table_div"></div>
       </div>
       
       
@@ -89,9 +91,10 @@
       
       
       <script type="text/javascript">
-      
-  
-      
+      google.charts.load('current', {'packages':['table']});
+      google.charts.setOnLoadCallback(graphBasedOnData);            
+            
+
       // indexeddb ------------------------------------------------------------------------------------------------------------------
         window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
  
@@ -123,6 +126,7 @@
          $("#one").show();
          $("#two").hide();
          $("#three").hide();
+         $("#four").hide();
          
          // when a nav link is clicked, hide screens then show target
          
@@ -135,18 +139,95 @@
          $(".screen").hide();
          var targetSelector = $(this).attr("href");
          $(targetSelector).show();
-         if(targetSelector =='#three'){
-             listCurList();
-         }
          document.querySelector(".mdc-drawer--temporary").MDCTemporaryDrawer.open = false; 
          document.querySelector('#city-tf').MDCTextField.value = "";
          document.querySelector('#state-country-tf').MDCTextField.value = "";
+         if(targetSelector =='#three'){
+             listCurList();
+         }
+         if(targetSelector =='#four'){
+             graphBasedOnData();
+         }
          });
          });
          
          
          function listCurList(){
-             logAllFromDB();
+            db = request.result;
+            console.log("success:" + db);
+
+            console.log("attempting to log");
+            var db = request.result;
+            var objectStore = db.transaction("cityName").objectStore("cityName");
+            
+            objectStore.openCursor().onsuccess = function(e){
+                var cursor = e.target.result;
+                
+                if(cursor){
+                    cursor.continue();
+                    
+                }else{
+                    console.log("end of db");
+                }
+            }
+ 
+         }
+
+         function graphBasedOnData(){
+             clearBox('table_div');
+            db = request.result;
+            var dataSet = [];
+              console.log("attempting to log");
+            var data = new google.visualization.DataTable();
+            
+            data.addColumn('string', 'City');
+            data.addColumn('string', 'State');
+            data.addColumn('number', 'Weather' + ascii(176) + 'C');
+            data.addColumn('string', 'Date');
+            data.addColumn('string', 'Description');
+
+            var db = request.result;
+            var objectStore = db.transaction("cityName").objectStore("cityName");
+            objectStore.openCursor().onsuccess = function(e){
+                var cursor = e.target.result;
+                                  
+                if(cursor){
+                    /*
+                    console.log( cursor.key+
+                                 cursor.value.stateCountryName,+
+                                 cursor.value.temp + ascii(176) + "C"+
+                                 cursor.value.date+
+                                 cursor.value.desc);
+                                 */
+                    var temp = [cursor.key, 
+                                cursor.value.stateCountryName, 
+                                cursor.value.temp,
+                                cursor.value.date,
+                                cursor.value.desc];   
+                                
+                    
+                    cursor.continue();
+                    dataSet.push(temp);
+                }else{
+                    console.log("end of db" );
+                }
+                
+            }
+            
+setTimeout(function()
+{
+            var dd = dataSet;
+            data.addRows(dd);
+        var table = new google.visualization.Table(document.getElementById('table_div'));
+
+        table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+}, 100);            
+/*
+            console.log("dataSet");
+            console.log(dataSet);
+*/
+             
+             
          }
          
          
@@ -257,29 +338,7 @@
          
              window.mdc.autoInit();
              
-             
-        function logAllFromDB(e){
-            
 
-            db = request.result;
-            console.log("success:" + db);
-
-            console.log("attempting to log");
-            var db = request.result;
-            var objectStore = db.transaction("cityName").objectStore("cityName");
-            
-            objectStore.openCursor().onsuccess = function(e){
-                var cursor = e.target.result;
-                
-                if(cursor){
-                    console.log("numba: " + cursor.key + " name: " + cursor.value.jokeText);
-                    cursor.continue();
-                }else{
-                    console.log("end of db");
-                }
-            }
- 
-        }
 
         
       </script>
