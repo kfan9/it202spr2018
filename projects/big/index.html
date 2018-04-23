@@ -26,9 +26,12 @@
                <i class="material-icons mdc-list-item__graphic" aria-hidden="true"></i>Home
                </a>
                <a class="mdc-list-item" href="#two">
-               <i class="material-icons mdc-list-item__graphic" aria-hidden="true"></i>Your List
+               <i class="material-icons mdc-list-item__graphic" aria-hidden="true"></i>Searched
                </a>
                <a class="mdc-list-item" href="#three">
+               <i class="material-icons mdc-list-item__graphic" aria-hidden="true"></i>Your List
+               </a>
+               <a class="mdc-list-item" href="#four">
                <i class="material-icons mdc-list-item__graphic" aria-hidden="true"></i>Graph
                </a>
             </nav>
@@ -64,34 +67,57 @@
       </div>
       </section>
       </div>
-      <!-- screen 2 s2 -->
+      <!-- screen 2 s2 Searched-->
       <div id="two" class="screen">
-         <section class="hero">
-            <div class="mdc-card demo-card screen-card">
-               <a class="mdc-card__primary-action" href="#">
-                  <div class="demo-card__primary">
-                     <h2 class="demo-card__title mdc-typography--title">Oops! You haven't added anything.</h2>
-                     <h3 class="demo-card__subtitle mdc-typography--subheading1">go back home and find where you want to live.</h3>
-                  </div>
-               </a>
-               <div class="mdc-card__actions">
-                  <div class="mdc-card__action-buttons">
-                     <button class="mdc-button mdc-card__action mdc-card__action--button">Read</button>
-                     <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
-                  </div>
-               </div>
-            </div>
-         </section>
+
       </div>
-      <!-- screen 3 s3 -->
+      <!-- screen 3 s3 Your List -->
       <div id="three" class="screen">
-         <h1>Third</h1>
+
       </div>
+      <div id="four" class="screen">
+         <h1>forth</h1>
+      </div>
+      
+      
+      
+      
       <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
       <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js"></script>
+      
+      
       <script type="text/javascript">
+      
+  
+      
+      // indexeddb ------------------------------------------------------------------------------------------------------------------
+        window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+ 
+        if (!window.indexedDB) {
+            window.alert("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
+        }
+
+        var db;
+        var request = window.indexedDB.open("UserData", 1);
+        
+        request.onerror = function(e){
+            console("on error: " + e.target.errorCode);
+        }
+       
+        request.onsuccess = function(e){
+            db = request.result;
+            console.log("success:" + db);
+        }     
+        
+        request.onupgradeneeded = function(e){
+            var db = e.target.result;
+            var objectStore = db.createObjectStore("cityName", {keyPath: "cityName", autoIncrement: true});
+            
+        }           
+
+      
          $(document).ready(function(){
          // show the home screen
          $("#one").show();
@@ -108,18 +134,31 @@
          $("nav a").on("click", function() {
          $(".screen").hide();
          var targetSelector = $(this).attr("href");
-         console.log(targetSelector)
          $(targetSelector).show();
-         document.querySelector(".mdc-drawer--temporary").MDCTemporaryDrawer.open = false;  
+         if(targetSelector =='#three'){
+             listCurList();
+         }
+         document.querySelector(".mdc-drawer--temporary").MDCTemporaryDrawer.open = false; 
+         document.querySelector('#city-tf').MDCTextField.value = "";
+         document.querySelector('#state-country-tf').MDCTextField.value = "";
          });
          });
          
+         
+         function listCurList(){
+             logAllFromDB();
+         }
+         
+         
+         
          function getWeatherAndJoke(){
+             
+             clearBox('two');
              var city, state;
              var joke;
              city = document.querySelector('#city-tf').MDCTextField.value;
              state = document.querySelector('#state-country-tf').MDCTextField.value; 
-         
+             request = window.indexedDB.open("UserData", 1);
 
             
             $.ajax({
@@ -127,7 +166,6 @@
               url: "https://icanhazdadjoke.com",
               success: function(data) {
                 joke = data.joke;
-                console.log(joke);
                 
               },
               dataType: "json"
@@ -149,20 +187,51 @@
                              '<h3 class="demo-card__subtitle mdc-typography--subheading1">' + curWeather.data[0].weather.description + '</h3>'+
                              '<h3 class="demo-card__subtitle mdc-typography--subheading1">' + curWeather.data[0].temp + ascii(176) + 'C</h3>'+
                              '<h3 class="demo-card__subtitle mdc-typography--subheading1">Joke of the search:</h3>'+
-                             '<h3 class="demo-card__subtitle mdc-typography--subheading1">' + joke + '</h3>'+                             
+                             '<h3 class="demo-card__subtitle mdc-typography--subheading1">' + joke + '</h3>'+    
+                            '<div id="hero-js-select" class="mdc-select">' +
+                              '<select class="mdc-select__native-control">' +
+                                '<option value="yes-no-funny" selected>Yes or No</option>' +
+                                '<option value="yes-funny">Yes</option>' +
+                                '<option value="no-funny">No</option>' +
+                              '</select>' +
+                              '<div class="mdc-select__label mdc-select__label--float-above">Funny?</div>' +
+                              '<div class="mdc-select__bottom-line"></div>' +
+                            '</div>' +                             
                           '</div>'+
                        '</a>'+
                        '<div class="mdc-card__actions">'+
                           '<div class="mdc-card__action-buttons">'+
-                             '<button class="mdc-button mdc-card__action mdc-card__action--button">Add</button>'+
-                             '<button class="mdc-button mdc-card__action mdc-card__action--button">Remove</button>'+
+                             '<button class="mdc-button mdc-card__action mdc-card__action--button" id="testing123">Add</button>'+
                           '</div>'+
                        '</div>'+
                     '</div>'+
                  '</section>'
                     );
-                 console.log(curWeather.data[0].rh);
+
+            db = request.result;
+                    var addReq = db.transaction(["cityName"], "readwrite").
+                                objectStore("cityName").
+                                add({ cityName: curWeather.data[0].city_name, 
+                        stateCountryName: curWeather.data[0].state_code, 
+                        date: curWeather.data[0].datetime,
+                        desc: curWeather.data[0].weather.description,
+                        temp:curWeather.data[0].temp,
+                        jokeText: joke, 
+                        funny:true
+                        });
+                        
+                    addReq.onsuccess = function(e){
+                        console.log("add success " + e);
+                    }
+                    
+                    addReq.onerror = function(e){
+                        console.log("add fail " + e);
+                    }
+
+            
              }
+
+
          $("#one").hide();
          $("#two").show();
          $("#three").hide();
@@ -179,10 +248,40 @@
          
          // use a708d5fe9c2141f493b8be489740df84 - https://www.weatherbit.io/account/dashboard
          //https://api.weatherbit.io/v2.0/current?city=Chicago,IL&key=a708d5fe9c2141f493b8be489740df84
-         
+        function clearBox(elementID)
+        {
+            document.getElementById(elementID).innerHTML = "";
+        }
          function ascii (a) { return String.fromCharCode(a); }
+         
+         
              window.mdc.autoInit();
-           
+             
+             
+        function logAllFromDB(e){
+            
+
+            db = request.result;
+            console.log("success:" + db);
+
+            console.log("attempting to log");
+            var db = request.result;
+            var objectStore = db.transaction("cityName").objectStore("cityName");
+            
+            objectStore.openCursor().onsuccess = function(e){
+                var cursor = e.target.result;
+                
+                if(cursor){
+                    console.log("numba: " + cursor.key + " name: " + cursor.value.jokeText);
+                    cursor.continue();
+                }else{
+                    console.log("end of db");
+                }
+            }
+ 
+        }
+
+        
       </script>
    </body>
 </html>
