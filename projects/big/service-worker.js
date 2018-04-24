@@ -88,7 +88,7 @@ self.addEventListener('fetch', function(e) {
 						caches.open(cacheName).then(function(cache) {
 
 							// Put the fetched response in the cache
-							cache.put(e.request, responseClone);
+							//cache.put(e.request, responseClone);
 							console.log('[ServiceWorker] New Data Cached', e.request.url);
 
 							// Return the response
