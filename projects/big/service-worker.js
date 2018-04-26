@@ -4,7 +4,7 @@ var cacheFiles = [
 	'./',
     './index.html',
     './css/style.css',
-    '/js/app.js'
+    './js/app.js'
     ];
 
 
@@ -21,10 +21,12 @@ self.addEventListener('install', function(e) {
 	    	// Add all the default files to the cache
 			console.log('[ServiceWorker] Caching cacheFiles');
 			cacheFiles.forEach(function (url) {
-                cache.add(url).catch(/* optional error handling/logging */);
+                cache.add(url).catch(
+                	console.log("error installing")
+                	);
             });
 	    })
-	); // end e.waitUntil
+	);
 });
 
 
