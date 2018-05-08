@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>lol</title>
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css" rel="stylesheet">
+<style>
+    canvas {
+      border: 1px solid black;
+
+    }
+
+</style>
+</head>
+
+<body>
+    <canvas></canvas>
+<input type="color" id="c1">
+<input type="color" id="c2">
+
+
+
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js"></script>
+
+
+    <script type="text/javascript">
+    var canvas = document.querySelector("canvas");
+    var ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    var curColor = "#000000";
+    var x, y;
+    var mouse = {
+    x: undefined,
+    y: undefined
+    }
+
+window.addEventListener("mousemove",
+    function (event) {
+        mouse.x = event.x;
+        mouse.y = event.y;
+        console.log(mouse.x + " " + mouse.y);
+    });
+    
+var c1;
+var c2;
+
+window.addEventListener("load", startup, false);
+function startup() {
+ c1 = document.querySelector("#c1");
+ c1.addEventListener("input", updateFirst, false);
+ c1.addEventListener("change", updateAll, false);
+  c1.select();
+   c2 = document.querySelector("#c2");
+ c2.addEventListener("input", updateFirst1, false);
+ c2.addEventListener("change", updateAll1, false);
+  c2.select();
+}
+
+function updateFirst(event) {
+  var canvas = document.querySelector("canvas");
+    console.log(event.target.value);
+  if (canvas) {
+    canvas.style.color = event.target.value;
+    ctx.fillStyle=event.target.value;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+}
+function updateAll(event) {
+  document.querySelectorAll("p").forEach(function(p) {
+    p.style.color = event.target.value;
+  });
+}
+
+function updateFirst1(event) {
+    curColor = event.target.value;
+}
+function updateAll1(event) {
+  curColor = event.target.value;
+}
+
+
+
+
+canvas.addEventListener('click', function() { 
+    ctx.fillStyle = curColor;
+    ctx.beginPath();
+    
+ctx.arc(mouse.x,mouse.y,10,0,2*Math.PI);
+ctx.fill();
+}, false);
+
+
+
+    
+
+    
+    
+    
+        window.mdc.autoInit();
+
+    </script>
+</body>
+
+</html>

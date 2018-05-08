@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    
+    <style type="text/css">
+        #map {
+        height: 100%;
+      }
+    </style>
+        <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBx9MZBbuS-WmsgO498ZEulTThTMuMjeqE"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+    <script>
+// In the following example, markers appear when the user clicks on the map.
+// Each marker is labeled with a single alphabetical character.
+var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var labelIndex = 0;
+
+function initialize() {
+  var bangalore = { lat: 12.97, lng: 77.59 };
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 12,
+    center: bangalore
+  });
+
+  // This event listener calls addMarker() when the map is clicked.
+  google.maps.event.addListener(map, 'click', function(event) {
+    addMarker(event.latLng, map);
+  });
+
+  // Add a marker at the center of the map.
+  addMarker(bangalore, map);
+}
+
+// Adds a marker to the map.
+function addMarker(location, map) {
+  // Add the marker at the clicked location, and add the next-available label
+  // from the array of alphabetical characters.
+  var marker = new google.maps.Marker({
+    position: location,
+    label: labels[labelIndex++ % labels.length],
+    map: map
+  });
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+</head>
+
+<body>
+    <div class="form-group">
+        <label for="exampleSelect1">Example select</label>
+        <select class="form-control" id="selectOptions">
+
+        </select>
+    </div>
+    <button type="button" class="btn btn-primary" id="searchBtn">Search</button>
+
+    <div class="list-group">
+
+    </div>
+
+<div id="map"></div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <script>
+    
+
+
+
+
+        $("#selectOptions").append(
+            '<option>STI Specialty Clinic</option>' +
+            '<option>Mental Health Clinic</option>' +
+            '<option>WIC Clinic</option>');
+        $("#searchBtn").click(function () {
+            $(".list-group").text("");
+
+
+            var selectedText = $("#selectOptions option:selected").text();
+
+            $.ajax({
+                url: "https://data.cityofchicago.org/resource/t57k-za2y.json",
+                method: "GET",
+            }).done(function (response) {
+
+                $.each(response, function (key, value) {
+                    if (value.clinic_type === selectedText) {
+                        $(".list-group").append(
+                            '<a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">' +
+                            ' <div class="d-flex w-100 justify-content-between">' +
+                            '<h5 class="mb-1">' + value.site_name + '</h5>' +
+                            '<small>' + value.clinic_type +  '</small>' +
+                            '</div>' +
+                            '<p class="mb-1">' + value.street_address +  '</p>' +
+                            '<p class="mb-1">' + value.city + ', ' +  value.zip +  '</p>' +
+                            '<p class="mb-1">' + value.phone_1 +  '</p>' +
+                            '<small>' + value.hours_of_operation  +  '</small>' +
+                            '</a>'
+                        );
+                    }
+                });
+
+            });
+
+
+
+        });
+
+    </script>
+</body>
+
+</html>
